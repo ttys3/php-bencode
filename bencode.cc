@@ -19,7 +19,7 @@ PHP_METHOD(bitem, parse)
         RETURN_NULL();
     }
     std::string ben_str(ben, ben_len);
-    RETURN_ZVAL(bitem::parse(ben_str), 1, 1);
+    CALL_AND_HANDLE(RETURN_ZVAL(bitem::parse(ben_str), 1, 1));
 }
 PHP_METHOD(bitem, load)
 {
@@ -29,7 +29,7 @@ PHP_METHOD(bitem, load)
         RETURN_NULL();
     }
     std::string file_path_str(file_path, file_path_len);
-    RETURN_ZVAL(bitem::load(file_path_str), 1, 1);
+    CALL_AND_HANDLE(RETURN_ZVAL(bitem::load(file_path_str), 1, 1));
 }
 PHP_METHOD(bitem, save)
 {

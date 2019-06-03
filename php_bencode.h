@@ -18,4 +18,12 @@ PHP_MSHUTDOWN_FUNCTION(bencode);
 extern zend_module_entry bencode_module_entry;
 #define phpext_bencode_ptr &bencode_module_entry
 
+#define CALL_AND_HANDLE(expr)           \
+    try {                               \
+        return (expr);                 \
+    } catch (std::exception& e) {                       \
+        zend_throw_exception(NULL, e.what(), 2);              \
+        RETURN_NULL();                              \
+    }
+
 #endif
