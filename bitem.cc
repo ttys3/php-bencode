@@ -20,6 +20,7 @@ zval * bitem::get_zval_bool(const bool value) {
 std::string bitem::get_current_key(const std::string &path, size_t &pt) {
     size_t start = pt;
     while (!(path[pt] == '/' && path[pt - 1] != '\\') && pt < path.length()) ++pt;
+    bitem::check_range(path, start);
     std::string current_key = path.substr(start, pt - start);
     ++pt;
     size_t escape = current_key.find("\\/");
@@ -35,6 +36,7 @@ std::string bitem::escape_key(const std::string &key) {
     size_t pt = 0;
     size_t to_esc = std::min(key.find('/', pt), key.find('\\', pt));
     while (to_esc < key.length()) {
+        bitem::check_range(key, pt);
         result += key.substr(pt, to_esc - pt);
         if (key[to_esc] == '/')
             result += "\\/";
@@ -43,6 +45,7 @@ std::string bitem::escape_key(const std::string &key) {
         pt = to_esc + 1;
         to_esc = std::min(key.find('/', pt), key.find('\\', pt));
     }
+    bitem::check_range(key, pt);
     return result + key.substr(pt);
 }
 
@@ -113,4 +116,44 @@ void bitem::save(const std::string &file_path) const {
     }
     ben_file << encode();
     ben_file.close();
+}
+
+unsigned long long bitem::stoull(const std::string& str, size_t* idx = 0, int base = 10) {
+    try {
+        return std::stoull(str, idx, base);
+    } catch (const std::invalid_argument& ia) {
+        bitem::throw_general_exception("Invalid argument: " + std::string(ia.what()));
+        return 0;
+    } catch (const std::out_of_range& oor) {
+        bitem::throw_general_exception("Out of Range error: " + std::string(oor.what()));
+        return 0;
+    } catch (const std::exception& e)
+    {
+        bitem::throw_general_exception("Undefined error: " + std::string(e.what()));
+        return 0;
+    }
+}
+
+long long bitem::stoll(const std::string& str, size_t* idx = 0, int base = 10) {
+    try {
+        return std::stoll(str, idx, base);
+    } catch (const std::invalid_argument& ia) {
+        bitem::throw_general_exception("Invalid argument: " + std::string(ia.what()));
+        return 0;
+    } catch (const std::out_of_range& oor) {
+        bitem::throw_general_exception("Out of Range error: " + std::string(oor.what()));
+        return 0;
+    } catch (const std::exception& e)
+    {
+        bitem::throw_general_exception("Undefined error: " + std::string(e.what()));
+        return 0;
+    }
+}
+
+//std::string::substr throw std::out_of_range if start_pos > size()
+//this method ensure PHP throw an exception
+void bitem::check_range(const std::string& str, size_t start_pos) {
+    if (start_pos > str.size()) {
+        bitem::throw_general_exception("Out of Range error while process string: " + str);
+    }
 }

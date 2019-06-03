@@ -19,12 +19,7 @@ PHP_METHOD(bitem, parse)
         RETURN_NULL();
     }
     std::string ben_str(ben, ben_len);
-    try {
-        RETURN_ZVAL(bitem::parse(ben_str), 1, 1);
-    } catch (std::exception& e) {
-        zend_throw_exception(NULL, e.what(), 2);
-        RETURN_NULL();
-    }
+    RETURN_ZVAL(bitem::parse(ben_str), 1, 1);
 }
 PHP_METHOD(bitem, load)
 {

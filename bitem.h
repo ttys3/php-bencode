@@ -33,6 +33,9 @@ class bitem {
         virtual zval * to_array(const bool include_meta) const = 0;
         // mode 0: search in keys; mode 1: search in values
         virtual zval * search(const std::string &needle, const long &mode, const std::string path) const = 0;
+        static unsigned long long stoull(const std::string& str, size_t* idx, int base);
+        static long long stoll(const std::string& str, size_t* idx, int base);
+        static void check_range(const std::string& str, size_t start_pos);
 };
 
 #endif

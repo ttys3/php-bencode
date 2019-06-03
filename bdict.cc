@@ -193,8 +193,10 @@ zval * bdict::parse(const std::string &ben, size_t &pt) {
     while (ben[pt] != 'e') {
         size_t start = pt;
         while (isdigit(ben[pt])) ++pt;
+        bitem::check_range(ben, start);
         std::string key_len = ben.substr(start, pt - start);
         ++pt;
+        bitem::check_range(ben, pt);
         std::string key = ben.substr(pt, std::stoull(key_len));
         pt += std::stoull(key_len);
         if (ben[pt] == 'd') {
