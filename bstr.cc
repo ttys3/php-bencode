@@ -29,7 +29,7 @@ zval * bstr::parse(const std::string &ben, size_t &pt) {
     const size_t start = pt;
     while (isdigit(ben[pt])) ++pt;
     bitem::check_range(ben, pt);
-    size_t len = std::stoull(ben.substr(start, pt - start));
+    size_t len = bitem::stoull(ben.substr(start, pt - start));
     ++pt;
 
     zval *zv = new zval();

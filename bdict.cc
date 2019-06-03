@@ -197,8 +197,8 @@ zval * bdict::parse(const std::string &ben, size_t &pt) {
         std::string key_len = ben.substr(start, pt - start);
         ++pt;
         bitem::check_range(ben, pt);
-        std::string key = ben.substr(pt, std::stoull(key_len));
-        pt += std::stoull(key_len);
+        std::string key = ben.substr(pt, bitem::stoull(key_len));
+        pt += bitem::stoull(key_len);
         if (ben[pt] == 'd') {
             zval *bnode = bdict::parse(ben, pt);
             zend_hash_str_add(intern->bnode_data->_data, key.c_str(), key.length(), bnode);

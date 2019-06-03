@@ -108,7 +108,7 @@ zval * blist::get_path(const std::string &key, size_t &pt) const {
     if (!bitem::is_ull(current_key)) {
         return bitem::get_zval_bool(false);
     }
-    size_t current_key_long = std::stoull(current_key);
+    size_t current_key_long = bitem::stoull(current_key);
 
     if (!zend_hash_index_exists(_data, current_key_long)) {
         return bitem::get_zval_bool(false);
@@ -140,7 +140,7 @@ void blist::set_path(const std::string &key, size_t &pt, zval *value) {
         bitem::throw_general_exception("Invalid key for blist, only positive integer is allowed");
         return;
     }
-    size_t current_key_long = std::stoull(current_key);
+    size_t current_key_long = bitem::stoull(current_key);
     if (zend_hash_index_exists(_data, current_key_long)) {
         zval *subnode = zend_hash_index_find(_data, current_key_long);
         std::string sub_class_name = zend_container::bnode_object_get_class_name(subnode);
@@ -193,7 +193,7 @@ bool blist::del_path(const std::string &key, size_t &pt) {
     if (!bitem::is_ull(current_key)) {
         return false;
     }
-    size_t current_key_long = std::stoull(current_key);
+    size_t current_key_long = bitem::stoull(current_key);
 
     if (!zend_hash_index_exists(_data, current_key_long)) {
         return false;

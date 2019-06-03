@@ -30,7 +30,7 @@ zval * bint::parse(const std::string &ben, size_t &pt) {
     size_t start = ++pt;
     while (ben[pt] != 'e') ++pt;
     bitem::check_range(ben, start);
-    long result = std::stoll(ben.substr(start, pt - start));
+    long result = bitem::stoll(ben.substr(start, pt - start));
     ++pt;
 
     zval *zv = new zval();
@@ -62,7 +62,7 @@ zval * bint::search(const std::string &needle, const long &mode, const std::stri
     zval *zv = new zval();
     array_init(zv);
 
-    if (mode == 1 && bitem::is_ll(needle) && _value == std::stoll(needle))
+    if (mode == 1 && bitem::is_ll(needle) && _value == bitem::stoll(needle))
         add_next_index_stringl(zv, path.c_str(), path.length());
 
     return zv;
