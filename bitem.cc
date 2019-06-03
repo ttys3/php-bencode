@@ -118,7 +118,7 @@ void bitem::save(const std::string &file_path) const {
     ben_file.close();
 }
 
-unsigned long long bitem::stoull(const std::string& str, size_t* idx = 0, int base = 10) {
+unsigned long long bitem::stoull(const std::string& str, size_t* idx, int base) {
     try {
         return std::stoull(str, idx, base);
     } catch (const std::invalid_argument& ia) {
@@ -134,7 +134,7 @@ unsigned long long bitem::stoull(const std::string& str, size_t* idx = 0, int ba
     }
 }
 
-long long bitem::stoll(const std::string& str, size_t* idx = 0, int base = 10) {
+long long bitem::stoll(const std::string& str, size_t* idx, int base) {
     try {
         return std::stoll(str, idx, base);
     } catch (const std::invalid_argument& ia) {
