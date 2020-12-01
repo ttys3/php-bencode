@@ -10,22 +10,22 @@
     {                                                                                                    \
         return (bclass##_object *)((char *)obj - XtOffsetOf(bclass##_object, std));                      \
     }                                                                                                    \
-    void zend_container::bclass##_free_storage(zend_object *object TSRMLS_DC)                            \
+    void zend_container::bclass##_free_storage(zend_object *object)                            \
     {                                                                                                    \
         bclass##_object *intern = zend_container::bclass##_fetch_object(object);                         \
         delete intern->bnode_data;                                                                       \
-        zend_object_std_dtor(&intern->std TSRMLS_CC);                                                    \
+        zend_object_std_dtor(&intern->std);                                                    \
     }                                                                                                    \
-    zend_object *zend_container::bclass##_object_new(zend_class_entry *ce TSRMLS_DC)                     \
+    zend_object *zend_container::bclass##_object_new(zend_class_entry *ce)                     \
     {                                                                                                    \
         bclass##_object *intern = (bclass##_object *)                                                    \
             ecalloc(1, sizeof(bclass##_object) + zend_object_properties_size(ce));                       \
-        zend_object_std_init(&intern->std, ce TSRMLS_CC);                                                \
+        zend_object_std_init(&intern->std, ce);                                                \
         object_properties_init(&intern->std, ce);                                                        \
         intern->std.handlers = &zend_container::bclass##_object_handlers;                                \
         return &intern->std;                                                                             \
     }                                                                                                    \
-    zend_object *zend_container::bclass##_object_clone(zval *object TSRMLS_DC)                           \
+    zend_object *zend_container::bclass##_object_clone(zval *object)                           \
     {                                                                                                    \
         bclass##_object *old_object = zend_container::bclass##_fetch_object(Z_OBJ_P(object));            \
         zend_object *new_zend_object = zend_container::bclass##_object_new(zend_container::bclass##_ce); \
@@ -42,7 +42,7 @@
             INIT_CLASS_ENTRY(ce, "bencode\\" #bclass, bclass##_methods)                                         \
         else                                                                                                    \
             INIT_CLASS_ENTRY(ce, #bclass, bclass##_methods);                                                    \
-        zend_container::bclass##_ce = zend_register_internal_class_ex(&ce, zend_container::bitem_ce TSRMLS_CC); \
+        zend_container::bclass##_ce = zend_register_internal_class_ex(&ce, zend_container::bitem_ce); \
         zend_container::bclass##_ce->create_object = zend_container::bclass##_object_new;                       \
         memcpy(&zend_container::bclass##_object_handlers,                                                       \
                zend_get_std_object_handlers(), sizeof(zend_object_handlers));                                   \

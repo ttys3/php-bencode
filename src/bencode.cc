@@ -33,7 +33,7 @@ PHP_METHOD(bitem, parse)
 {
     char *ben;
     size_t ben_len;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &ben, &ben_len) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "s", &ben, &ben_len) == FAILURE) {
         RETURN_NULL();
     }
     std::string ben_str(ben, ben_len);
@@ -43,7 +43,7 @@ PHP_METHOD(bitem, load)
 {
     char *file_path;
     size_t file_path_len;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &file_path, &file_path_len) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "s", &file_path, &file_path_len) == FAILURE) {
         RETURN_NULL();
     }
     std::string file_path_str(file_path, file_path_len);
@@ -53,7 +53,7 @@ PHP_METHOD(bitem, save)
 {
     char *file_path;
     size_t file_path_len;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &file_path, &file_path_len) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "s", &file_path, &file_path_len) == FAILURE) {
         RETURN_NULL();
     }
     std::string file_path_str(file_path, file_path_len);
@@ -105,7 +105,7 @@ PHP_METHOD(bdict, get)
 {
     char *key;
     size_t key_len = 0;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &key, &key_len) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "s", &key, &key_len) == FAILURE) {
         RETURN_NULL();
     }
     bdict_object *intern = Z_BDICT_OBJ_P(getThis());
@@ -117,7 +117,7 @@ PHP_METHOD(bdict, get_path)
 {
     char *key;
     size_t key_len = 0;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &key, &key_len) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "s", &key, &key_len) == FAILURE) {
         RETURN_NULL();
     }
     bdict_object *intern = Z_BDICT_OBJ_P(getThis());
@@ -130,7 +130,7 @@ PHP_METHOD(bdict, get_copy)
 {
     char *key;
     size_t key_len = 0;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &key, &key_len) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "s", &key, &key_len) == FAILURE) {
         RETURN_NULL();
     }
     bdict_object *intern = Z_BDICT_OBJ_P(getThis());
@@ -142,7 +142,7 @@ PHP_METHOD(bdict, get_path_copy)
 {
     char *key;
     size_t key_len = 0;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &key, &key_len) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "s", &key, &key_len) == FAILURE) {
         RETURN_NULL();
     }
     bdict_object *intern = Z_BDICT_OBJ_P(getThis());
@@ -156,7 +156,7 @@ PHP_METHOD(bdict, set)
     char *key;
     size_t key_len = 0;
     zval *zv;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "so", &key, &key_len, &zv) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "so", &key, &key_len, &zv) == FAILURE) {
         RETURN_FALSE;
     }
     bdict_object *intern = Z_BDICT_OBJ_P(getThis());
@@ -169,7 +169,7 @@ PHP_METHOD(bdict, set_path)
     char *key;
     size_t key_len = 0;
     zval *zv;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "so", &key, &key_len, &zv) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "so", &key, &key_len, &zv) == FAILURE) {
         RETURN_FALSE;
     }
     bdict_object *intern = Z_BDICT_OBJ_P(getThis());
@@ -182,7 +182,7 @@ PHP_METHOD(bdict, has)
 {
     char *key;
     size_t key_len = 0;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &key, &key_len) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "s", &key, &key_len) == FAILURE) {
         RETURN_NULL();
     }
     bdict_object *intern = Z_BDICT_OBJ_P(getThis());
@@ -193,7 +193,7 @@ PHP_METHOD(bdict, del)
 {
     char *key;
     size_t key_len = 0;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &key, &key_len) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "s", &key, &key_len) == FAILURE) {
         RETURN_NULL();
     }
     bdict_object *intern = Z_BDICT_OBJ_P(getThis());
@@ -204,7 +204,7 @@ PHP_METHOD(bdict, del_path)
 {
     char *key;
     size_t key_len = 0;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &key, &key_len) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "s", &key, &key_len) == FAILURE) {
         RETURN_NULL();
     }
     bdict_object *intern = Z_BDICT_OBJ_P(getThis());
@@ -228,7 +228,7 @@ PHP_METHOD(bdict, parse)
 {
     char *ben;
     size_t ben_len = 0;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &ben, &ben_len) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "s", &ben, &ben_len) == FAILURE) {
         RETURN_NULL();
     }
     if (!ben_len)
@@ -248,7 +248,7 @@ PHP_METHOD(bdict, search)
     char *needle;
     size_t needle_len = 0;
     long mode;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "sl", &needle, &needle_len, &mode) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "sl", &needle, &needle_len, &mode) == FAILURE) {
         RETURN_NULL();
     }
     std::string tmp(needle, needle_len);
@@ -316,7 +316,7 @@ PHP_METHOD(blist, get_type)
 PHP_METHOD(blist, get)
 {
     long key;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &key) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "l", &key) == FAILURE) {
         RETURN_NULL();
     }
     if (key < 0) {
@@ -330,7 +330,7 @@ PHP_METHOD(blist, get_path)
 {
     char *key;
     size_t key_len;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &key, &key_len) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "s", &key, &key_len) == FAILURE) {
         RETURN_NULL();
     }
     blist_object *intern = Z_BLIST_OBJ_P(getThis());
@@ -342,7 +342,7 @@ PHP_METHOD(blist, get_path)
 PHP_METHOD(blist, get_copy)
 {
     long key;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &key) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "l", &key) == FAILURE) {
         RETURN_NULL();
     }
     if (key < 0) {
@@ -356,7 +356,7 @@ PHP_METHOD(blist, get_path_copy)
 {
     char *key;
     size_t key_len;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &key, &key_len) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "s", &key, &key_len) == FAILURE) {
         RETURN_NULL();
     }
     blist_object *intern = Z_BLIST_OBJ_P(getThis());
@@ -368,7 +368,7 @@ PHP_METHOD(blist, get_path_copy)
 PHP_METHOD(blist, add)
 {
     zval *zv;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "o", &zv) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "o", &zv) == FAILURE) {
         RETURN_FALSE;
     }
     blist_object *intern = Z_BLIST_OBJ_P(getThis());
@@ -380,7 +380,7 @@ PHP_METHOD(blist, set_path)
     char *key;
     long key_len;
     zval *zv;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "lo", &key, &key_len, &zv) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "lo", &key, &key_len, &zv) == FAILURE) {
         RETURN_FALSE;
     }
     blist_object *intern = Z_BLIST_OBJ_P(getThis());
@@ -393,7 +393,7 @@ PHP_METHOD(blist, set)
 {
     long key;
     zval *zv;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "lo", &key, &zv) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "lo", &key, &zv) == FAILURE) {
         RETURN_FALSE;
     }
     if (key < 0) {
@@ -406,7 +406,7 @@ PHP_METHOD(blist, set)
 PHP_METHOD(blist, has)
 {
     long key;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &key) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "l", &key) == FAILURE) {
         RETURN_NULL();
     }
     if (key < 0) {
@@ -418,7 +418,7 @@ PHP_METHOD(blist, has)
 PHP_METHOD(blist, del)
 {
     long key;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &key) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "l", &key) == FAILURE) {
         RETURN_NULL();
     }
     blist_object *intern = Z_BLIST_OBJ_P(getThis());
@@ -428,7 +428,7 @@ PHP_METHOD(blist, del_path)
 {
     char *key;
     size_t key_len;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &key, &key_len) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "s", &key, &key_len) == FAILURE) {
         RETURN_NULL();
     }
     blist_object *intern = Z_BLIST_OBJ_P(getThis());
@@ -452,7 +452,7 @@ PHP_METHOD(blist, parse)
 {
     char *ben;
     size_t ben_len = 0;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &ben, &ben_len) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "s", &ben, &ben_len) == FAILURE) {
         RETURN_NULL();
     }
     if (!ben_len)
@@ -472,7 +472,7 @@ PHP_METHOD(blist, search)
     char *needle;
     size_t needle_len = 0;
     long mode;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "sl", &needle, &needle_len, &mode) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "sl", &needle, &needle_len, &mode) == FAILURE) {
         RETURN_NULL();
     }
     std::string tmp(needle, needle_len);
@@ -529,7 +529,7 @@ PHP_METHOD(bstr, __construct)
 {
     char *value;
     size_t value_len = 0;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|s", &value, &value_len) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "|s", &value, &value_len) == FAILURE) {
         RETURN_NULL();
     }
     bstr *bnode = NULL;
@@ -558,7 +558,7 @@ PHP_METHOD(bstr, set)
 {
     char *value;
     size_t value_len = 0;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &value, &value_len) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "s", &value, &value_len) == FAILURE) {
         RETURN_FALSE;
     }
     std::string _value(value, value_len);
@@ -576,7 +576,7 @@ PHP_METHOD(bstr, parse)
 {
     char *ben;
     size_t ben_len = 0;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &ben, &ben_len) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "s", &ben, &ben_len) == FAILURE) {
         RETURN_NULL();
     }
     if (!ben_len)
@@ -634,7 +634,7 @@ static zend_function_entry bstr_methods[] = {
 PHP_METHOD(bint, __construct)
 {
     long value;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|l", &value) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "|l", &value) == FAILURE) {
         RETURN_NULL();
     }
     bint *bnode = NULL;
@@ -661,7 +661,7 @@ PHP_METHOD(bint, get)
 PHP_METHOD(bint, set)
 {
     long value;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &value) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "l", &value) == FAILURE) {
         RETURN_FALSE;
     }
     bint_object *intern = Z_BINT_OBJ_P(getThis());
@@ -678,7 +678,7 @@ PHP_METHOD(bint, parse)
 {
     char *ben;
     size_t ben_len = 0;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &ben, &ben_len) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "s", &ben, &ben_len) == FAILURE) {
         RETURN_NULL();
     }
     if (!ben_len)
@@ -752,7 +752,7 @@ PHP_MINIT_FUNCTION(bencode)
             INIT_CLASS_ENTRY(ce, "bitem", bitem_methods);
         ce.ce_flags |= ZEND_ACC_EXPLICIT_ABSTRACT_CLASS;
         ce.ce_flags |= ZEND_ACC_IMPLICIT_ABSTRACT_CLASS;
-        zend_container::bitem_ce = zend_register_internal_class(&ce TSRMLS_CC);
+        zend_container::bitem_ce = zend_register_internal_class(&ce);
         memcpy(&zend_container::bitem_object_handlers,
                zend_get_std_object_handlers(), sizeof(zend_object_handlers));
         zend_container::bitem_object_handlers.offset = XtOffsetOf(bitem_object, std);

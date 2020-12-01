@@ -62,9 +62,9 @@ ZEND_CONTAINER_PRE(bint)
     static zend_object_handlers bclass##_object_handlers;              \
     static zend_class_entry *bclass##_ce;                              \
     static bclass##_object *bclass##_fetch_object(zend_object *obj);   \
-    static void bclass##_free_storage(zend_object *object TSRMLS_DC);  \
-    static zend_object *bclass##_object_clone(zval *object TSRMLS_DC); \
-    static zend_object *bclass##_object_new(zend_class_entry *ce TSRMLS_DC);
+    static void bclass##_free_storage(zend_object *object);  \
+    static zend_object *bclass##_object_clone(zval *object); \
+    static zend_object *bclass##_object_new(zend_class_entry *ce);
 
 class zend_container
 {
