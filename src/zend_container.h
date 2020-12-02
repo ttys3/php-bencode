@@ -1,11 +1,15 @@
 #ifndef BENCODE_HEADER_ZEND_CONTAINER
 #define BENCODE_HEADER_ZEND_CONTAINER
 
+// https://github.com/mongodb/mongo-php-driver/commit/d785d5e15e826f20b73c804e5ad3c8fb351f6a06
+#define BENCODE_COMPAT_OBJ_P(val) Z_OBJ_P(val)
+#define BENCODE_COMPAT_GET_OBJ(val) val
+
 extern "C" {
 #include "php.h"
 
 // c func borrowed from https://github.com/php/php-src/blob/e08ce4c13db6e9aecd3497cd270b72d06c649bc7/ext/standard/array.c#L245
-static int php_array_key_compare_string(const void *a, const void *b)
+static int php_array_key_compare_string(Bucket *a, Bucket *b)
 {
     Bucket *f = (Bucket *)a;
     Bucket *s = (Bucket *)b;
@@ -87,7 +91,7 @@ public:
     static zend_object *bnode_object_clone(zval *object)
     {
         zval new_object;
-        ZVAL_OBJ(&new_object, Z_OBJ_P(object)->handlers->clone_obj(object));
+        ZVAL_OBJ(&new_object, Z_OBJ_P(object)->handlers->clone_obj(BENCODE_COMPAT_OBJ_P(object)));
         return Z_OBJ(new_object);
     }
     static inline bitem *bnode_fetch_object_data(zend_object *obj)
