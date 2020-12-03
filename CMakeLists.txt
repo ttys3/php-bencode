@@ -4,7 +4,13 @@ cmake_minimum_required(VERSION 3.15)
 set(PHP_EXT_NAME bencode)
 project(${PHP_EXT_NAME})
 
+message(STATUS "Begin cmaking of PHP extension ...")
+
 set(CMAKE_CXX_STANDARD 14)
+
+if (NOT CMAKE_C_STANDARD)
+    set(CMAKE_C_STANDARD 99)
+endif ()
 
 include_directories(.)
 include_directories(src)
