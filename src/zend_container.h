@@ -1,12 +1,20 @@
 #ifndef BENCODE_HEADER_ZEND_CONTAINER
 #define BENCODE_HEADER_ZEND_CONTAINER
 
-// https://github.com/mongodb/mongo-php-driver/commit/d785d5e15e826f20b73c804e5ad3c8fb351f6a06
-#define BENCODE_COMPAT_OBJ_P(val) Z_OBJ_P(val)
-#define BENCODE_COMPAT_GET_OBJ(val) val
-
 extern "C" {
 #include "php.h"
+
+// https://github.com/mongodb/mongo-php-driver/commit/d785d5e15e826f20b73c804e5ad3c8fb351f6a06
+
+#if PHP_VERSION_ID >= 80000
+#define BENCODE_COMPAT_OBJ_P(val) Z_OBJ_P(val)
+#define bencode_compat_object_type zend_object
+#define BENCODE_COMPAT_GET_OBJ(val) val
+#else /* PHP_VERSION_ID < 80000 */
+#define BENCODE_COMPAT_OBJ_P(val) val
+#define bencode_compat_object_type zval
+#define BENCODE_COMPAT_GET_OBJ(val) Z_OBJ_P(val)
+#endif /* PHP_VERSION_ID >= 80000 */
 
 // c func borrowed from https://github.com/php/php-src/blob/e08ce4c13db6e9aecd3497cd270b72d06c649bc7/ext/standard/array.c#L245
 static int php_array_key_compare_string(Bucket *a, Bucket *b)
@@ -67,7 +75,7 @@ ZEND_CONTAINER_PRE(bint)
     static zend_class_entry *bclass##_ce;                              \
     static bclass##_object *bclass##_fetch_object(zend_object *obj);   \
     static void bclass##_free_storage(zend_object *object);  \
-    static zend_object *bclass##_object_clone(zend_object *object); \
+    static zend_object *bclass##_object_clone(bencode_compat_object_type *object); \
     static zend_object *bclass##_object_new(zend_class_entry *ce);
 
 class zend_container
