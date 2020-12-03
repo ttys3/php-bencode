@@ -25,9 +25,9 @@
         intern->std.handlers = &zend_container::bclass##_object_handlers;                                \
         return &intern->std;                                                                             \
     }                                                                                                    \
-    zend_object *zend_container::bclass##_object_clone(zval *object)                           \
+    zend_object *zend_container::bclass##_object_clone(zend_object *object)                           \
     {                                                                                                    \
-        bclass##_object *old_object = zend_container::bclass##_fetch_object(Z_OBJ_P(object));            \
+        bclass##_object *old_object = zend_container::bclass##_fetch_object(object);            \
         zend_object *new_zend_object = zend_container::bclass##_object_new(zend_container::bclass##_ce); \
         bclass##_object *new_object = zend_container::bclass##_fetch_object(new_zend_object);            \
         bclass *new_object_data = new bclass(old_object->bnode_data);                                    \
