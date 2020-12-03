@@ -22,6 +22,7 @@
         RETURN_NULL();                                                                                                       \
     }
 
+
 /**** BITEM *****/
 PHP_METHOD(bitem, __construct)
 {
@@ -29,6 +30,7 @@ PHP_METHOD(bitem, __construct)
     // TODO: find a programmatic way to do this
     RETURN_NULL();
 }
+
 PHP_METHOD(bitem, parse)
 {
     char *ben;
@@ -39,6 +41,7 @@ PHP_METHOD(bitem, parse)
     std::string ben_str(ben, ben_len);
     CALL_AND_HANDLE(bitem::parse(ben_str));
 }
+
 PHP_METHOD(bitem, load)
 {
     char *file_path;
@@ -49,6 +52,7 @@ PHP_METHOD(bitem, load)
     std::string file_path_str(file_path, file_path_len);
     CALL_AND_HANDLE(bitem::load(file_path_str));
 }
+
 PHP_METHOD(bitem, save)
 {
     char *file_path;
@@ -77,12 +81,39 @@ PHP_METHOD(bitem, save)
     }
     RETURN_FALSE;
 }
+
+ZEND_BEGIN_ARG_INFO_EX(arginfo_void, 0, 0, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO_EX(arginfo_parse, 0, 0, 1)
+        ZEND_ARG_INFO(0, bencoded_string_to_parse)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO_EX(arginfo_file, 0, 0, 1)
+        ZEND_ARG_INFO(0, file)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO_EX(arginfo_key, 0, 0, 1)
+        ZEND_ARG_INFO(0, key)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO_EX(arginfo_key_value, 0, 0, 2)
+        ZEND_ARG_INFO(0, key)
+        ZEND_ARG_INFO(0, value)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO_EX(arginfo_search, 0, 0, 2)
+        ZEND_ARG_INFO(0, needle)
+        ZEND_ARG_INFO(0, mode)
+ZEND_END_ARG_INFO()
+
 static zend_function_entry bitem_methods[] = {
     /* clang-format off */
-    PHP_ME(bitem, __construct,          NULL, ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
-    PHP_ME(bitem, parse,                NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC)
-    PHP_ME(bitem, load,                 NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC)
-    PHP_ME(bitem, save,                 NULL, ZEND_ACC_PUBLIC)
+    PHP_ME(bitem, __construct,          arginfo_void, ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
+    PHP_ME(bitem, parse,                arginfo_parse, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC)
+    PHP_ME(bitem, load,                 arginfo_file, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC)
+    PHP_ME(bitem, save,                 arginfo_file, ZEND_ACC_PUBLIC)
+
     {NULL, NULL, NULL}
     /* clang-format on */
 };
@@ -95,12 +126,14 @@ PHP_METHOD(bdict, __construct)
     bdict_object *intern = Z_BDICT_OBJ_P(getThis());
     intern->bnode_data = bnode;
 }
+
 PHP_METHOD(bdict, get_type)
 {
     bdict_object *intern = Z_BDICT_OBJ_P(getThis());
     std::string result = intern->bnode_data->get_type();
     RETURN_STRINGL(result.c_str(), result.length());
 }
+
 PHP_METHOD(bdict, get)
 {
     char *key;
@@ -113,6 +146,7 @@ PHP_METHOD(bdict, get)
     zval zv = intern->bnode_data->get(_key);
     RETURN_ZVAL(&zv, 1, 1);
 }
+
 PHP_METHOD(bdict, get_path)
 {
     char *key;
@@ -126,6 +160,7 @@ PHP_METHOD(bdict, get_path)
     zval zv = intern->bnode_data->get_path(_key, pt);
     RETURN_ZVAL(&zv, 1, 1);
 }
+
 PHP_METHOD(bdict, get_copy)
 {
     char *key;
@@ -138,6 +173,7 @@ PHP_METHOD(bdict, get_copy)
     zval zv = intern->bnode_data->get(_key);
     RETURN_OBJ(zend_container::bnode_object_clone(&zv));
 }
+
 PHP_METHOD(bdict, get_path_copy)
 {
     char *key;
@@ -151,6 +187,7 @@ PHP_METHOD(bdict, get_path_copy)
     zval zv = intern->bnode_data->get_path(_key, pt);
     RETURN_OBJ(zend_container::bnode_object_clone(&zv));
 }
+
 PHP_METHOD(bdict, set)
 {
     char *key;
@@ -164,6 +201,7 @@ PHP_METHOD(bdict, set)
     intern->bnode_data->set(_key, zv);
     RETURN_TRUE;
 }
+
 PHP_METHOD(bdict, set_path)
 {
     char *key;
@@ -178,6 +216,7 @@ PHP_METHOD(bdict, set_path)
     intern->bnode_data->set_path(_key, pt, zv);
     RETURN_TRUE;
 }
+
 PHP_METHOD(bdict, has)
 {
     char *key;
@@ -189,6 +228,7 @@ PHP_METHOD(bdict, has)
     std::string _key(key, key_len);
     RETURN_BOOL(intern->bnode_data->has(_key));
 }
+
 PHP_METHOD(bdict, del)
 {
     char *key;
@@ -200,6 +240,7 @@ PHP_METHOD(bdict, del)
     std::string _key(key, key_len);
     RETURN_BOOL(intern->bnode_data->del(_key));
 }
+
 PHP_METHOD(bdict, del_path)
 {
     char *key;
@@ -212,18 +253,21 @@ PHP_METHOD(bdict, del_path)
     size_t pt = 0;
     RETURN_BOOL(intern->bnode_data->del_path(_key, pt));
 }
+
 PHP_METHOD(bdict, length)
 {
     bdict_object *intern = Z_BDICT_OBJ_P(getThis());
     size_t result = intern->bnode_data->length();
     RETURN_LONG(result);
 }
+
 PHP_METHOD(bdict, count)
 {
     bdict_object *intern = Z_BDICT_OBJ_P(getThis());
     size_t result = intern->bnode_data->count();
     RETURN_LONG(result);
 }
+
 PHP_METHOD(bdict, parse)
 {
     char *ben;
@@ -237,12 +281,14 @@ PHP_METHOD(bdict, parse)
     size_t pt = 0;
     CALL_AND_HANDLE(bdict::parse(tmp, pt));
 }
+
 PHP_METHOD(bdict, encode)
 {
     bdict_object *intern = Z_BDICT_OBJ_P(getThis());
     std::string result = intern->bnode_data->encode();
     RETURN_STRINGL(result.c_str(), result.length());
 }
+
 PHP_METHOD(bdict, search)
 {
     char *needle;
@@ -255,46 +301,51 @@ PHP_METHOD(bdict, search)
     bdict_object *intern = Z_BDICT_OBJ_P(getThis());
     CALL_AND_HANDLE(intern->bnode_data->search(tmp, mode, ""));
 }
+
 PHP_METHOD(bdict, to_array)
 {
     bdict_object *intern = Z_BDICT_OBJ_P(getThis());
     zval zv = intern->bnode_data->to_array(false);
     RETURN_ZVAL(&zv, 1, 1);
 }
+
 PHP_METHOD(bdict, to_meta_array)
 {
     bdict_object *intern = Z_BDICT_OBJ_P(getThis());
     zval zv = intern->bnode_data->to_array(true);
     RETURN_ZVAL(&zv, 1, 1);
 }
+
 PHP_METHOD(bdict, __toString)
 {
     bdict_object *intern = Z_BDICT_OBJ_P(getThis());
     std::string result = intern->bnode_data->encode();
     RETURN_STRINGL(result.c_str(), result.length());
 }
+
+
 static zend_function_entry bdict_methods[] = {
     /* clang-format off */
-    PHP_ME(bdict, __construct,          NULL, ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
-    PHP_ME(bdict, get_type,             NULL, ZEND_ACC_PUBLIC)
-    PHP_ME(bdict, get,                  NULL, ZEND_ACC_PUBLIC)
-    PHP_ME(bdict, get_path,             NULL, ZEND_ACC_PUBLIC)
-    PHP_ME(bdict, get_copy,             NULL, ZEND_ACC_PUBLIC)
-    PHP_ME(bdict, get_path_copy,        NULL, ZEND_ACC_PUBLIC)
-    PHP_ME(bdict, set,                  NULL, ZEND_ACC_PUBLIC)
-    PHP_ME(bdict, set_path,             NULL, ZEND_ACC_PUBLIC)
-    PHP_ME(bdict, has,                  NULL, ZEND_ACC_PUBLIC)
-    PHP_ME(bdict, del,                  NULL, ZEND_ACC_PUBLIC)
-    PHP_ME(bdict, del_path,             NULL, ZEND_ACC_PUBLIC)
-    PHP_ME(bdict, length,               NULL, ZEND_ACC_PUBLIC)
-    PHP_ME(bdict, count,                NULL, ZEND_ACC_PUBLIC)
-    PHP_ME(bdict, parse,                NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC)
-    PHP_ME(bdict, encode,               NULL, ZEND_ACC_PUBLIC)
-    PHP_ME(bitem, save,                 NULL, ZEND_ACC_PUBLIC)
-    PHP_ME(bdict, search,               NULL, ZEND_ACC_PUBLIC)
-    PHP_ME(bdict, to_array,             NULL, ZEND_ACC_PUBLIC)
-    PHP_ME(bdict, to_meta_array,        NULL, ZEND_ACC_PUBLIC)
-    PHP_ME(bdict, __toString,           NULL, ZEND_ACC_PUBLIC)
+    PHP_ME(bdict, __construct,          arginfo_void, ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
+    PHP_ME(bdict, get_type,             arginfo_void, ZEND_ACC_PUBLIC)
+    PHP_ME(bdict, get,                  arginfo_key, ZEND_ACC_PUBLIC)
+    PHP_ME(bdict, get_path,             arginfo_key, ZEND_ACC_PUBLIC)
+    PHP_ME(bdict, get_copy,             arginfo_key, ZEND_ACC_PUBLIC)
+    PHP_ME(bdict, get_path_copy,        arginfo_key, ZEND_ACC_PUBLIC)
+    PHP_ME(bdict, set,                  arginfo_key_value, ZEND_ACC_PUBLIC)
+    PHP_ME(bdict, set_path,             arginfo_key_value, ZEND_ACC_PUBLIC)
+    PHP_ME(bdict, has,                  arginfo_key, ZEND_ACC_PUBLIC)
+    PHP_ME(bdict, del,                  arginfo_key, ZEND_ACC_PUBLIC)
+    PHP_ME(bdict, del_path,             arginfo_key, ZEND_ACC_PUBLIC)
+    PHP_ME(bdict, length,               arginfo_void, ZEND_ACC_PUBLIC)
+    PHP_ME(bdict, count,                arginfo_void, ZEND_ACC_PUBLIC)
+    PHP_ME(bdict, parse,                arginfo_key, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC)
+    PHP_ME(bdict, encode,               arginfo_void, ZEND_ACC_PUBLIC)
+    PHP_ME(bitem, save,                 arginfo_file, ZEND_ACC_PUBLIC)
+    PHP_ME(bdict, search,               arginfo_search, ZEND_ACC_PUBLIC)
+    PHP_ME(bdict, to_array,             arginfo_void, ZEND_ACC_PUBLIC)
+    PHP_ME(bdict, to_meta_array,        arginfo_void, ZEND_ACC_PUBLIC)
+    PHP_ME(bdict, __toString,           arginfo_void, ZEND_ACC_PUBLIC)
     {NULL, NULL, NULL}
     /* clang-format on */
 };
@@ -307,12 +358,14 @@ PHP_METHOD(blist, __construct)
     blist_object *intern = Z_BLIST_OBJ_P(getThis());
     intern->bnode_data = bnode;
 }
+
 PHP_METHOD(blist, get_type)
 {
     blist_object *intern = Z_BLIST_OBJ_P(getThis());
     std::string result = intern->bnode_data->get_type();
     RETURN_STRINGL(result.c_str(), result.length());
 }
+
 PHP_METHOD(blist, get)
 {
     long key;
@@ -326,6 +379,7 @@ PHP_METHOD(blist, get)
     zval zv = intern->bnode_data->get(key);
     RETURN_ZVAL(&zv, 1, 1);
 }
+
 PHP_METHOD(blist, get_path)
 {
     char *key;
@@ -339,6 +393,7 @@ PHP_METHOD(blist, get_path)
     zval zv = intern->bnode_data->get_path(_key, pt);
     RETURN_ZVAL(&zv, 1, 1);
 }
+
 PHP_METHOD(blist, get_copy)
 {
     long key;
@@ -352,6 +407,7 @@ PHP_METHOD(blist, get_copy)
     zval zv = intern->bnode_data->get(key);
     RETURN_OBJ(zend_container::bnode_object_clone(&zv));
 }
+
 PHP_METHOD(blist, get_path_copy)
 {
     char *key;
@@ -365,6 +421,7 @@ PHP_METHOD(blist, get_path_copy)
     zval zv = intern->bnode_data->get_path(_key, pt);
     RETURN_OBJ(zend_container::bnode_object_clone(&zv));
 }
+
 PHP_METHOD(blist, add)
 {
     zval *zv;
@@ -375,6 +432,7 @@ PHP_METHOD(blist, add)
     intern->bnode_data->add(zv);
     RETURN_TRUE;
 }
+
 PHP_METHOD(blist, set_path)
 {
     char *key;
@@ -389,6 +447,7 @@ PHP_METHOD(blist, set_path)
     intern->bnode_data->set_path(_key, pt, zv);
     RETURN_TRUE;
 }
+
 PHP_METHOD(blist, set)
 {
     long key;
@@ -403,6 +462,7 @@ PHP_METHOD(blist, set)
     intern->bnode_data->set(key, zv);
     RETURN_TRUE;
 }
+
 PHP_METHOD(blist, has)
 {
     long key;
@@ -415,6 +475,7 @@ PHP_METHOD(blist, has)
     blist_object *intern = Z_BLIST_OBJ_P(getThis());
     RETURN_BOOL(intern->bnode_data->has(key));
 }
+
 PHP_METHOD(blist, del)
 {
     long key;
@@ -424,6 +485,7 @@ PHP_METHOD(blist, del)
     blist_object *intern = Z_BLIST_OBJ_P(getThis());
     RETURN_BOOL(intern->bnode_data->del(key));
 }
+
 PHP_METHOD(blist, del_path)
 {
     char *key;
@@ -436,18 +498,21 @@ PHP_METHOD(blist, del_path)
     size_t pt = 0;
     RETURN_BOOL(intern->bnode_data->del_path(_key, pt));
 }
+
 PHP_METHOD(blist, length)
 {
     blist_object *intern = Z_BLIST_OBJ_P(getThis());
     size_t result = intern->bnode_data->length();
     RETURN_LONG(result);
 }
+
 PHP_METHOD(blist, count)
 {
     blist_object *intern = Z_BLIST_OBJ_P(getThis());
     size_t result = intern->bnode_data->count();
     RETURN_LONG(result);
 }
+
 PHP_METHOD(blist, parse)
 {
     char *ben;
@@ -461,12 +526,14 @@ PHP_METHOD(blist, parse)
     size_t pt = 0;
     CALL_AND_HANDLE(blist::parse(tmp, pt));
 }
+
 PHP_METHOD(blist, encode)
 {
     blist_object *intern = Z_BLIST_OBJ_P(getThis());
     std::string result = intern->bnode_data->encode();
     RETURN_STRINGL(result.c_str(), result.length());
 }
+
 PHP_METHOD(blist, search)
 {
     char *needle;
@@ -479,47 +546,51 @@ PHP_METHOD(blist, search)
     blist_object *intern = Z_BLIST_OBJ_P(getThis());
     CALL_AND_HANDLE(intern->bnode_data->search(tmp, mode, ""));
 }
+
 PHP_METHOD(blist, to_array)
 {
     blist_object *intern = Z_BLIST_OBJ_P(getThis());
     zval zv = intern->bnode_data->to_array(false);
     RETURN_ZVAL(&zv, 1, 1);
 }
+
 PHP_METHOD(blist, to_meta_array)
 {
     blist_object *intern = Z_BLIST_OBJ_P(getThis());
     zval zv = intern->bnode_data->to_array(true);
     RETURN_ZVAL(&zv, 1, 1);
 }
+
 PHP_METHOD(blist, __toString)
 {
     blist_object *intern = Z_BLIST_OBJ_P(getThis());
     std::string result = intern->bnode_data->encode();
     RETURN_STRINGL(result.c_str(), result.length());
 }
+
 static zend_function_entry blist_methods[] = {
     /* clang-format off */
-    PHP_ME(blist, __construct,          NULL, ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
-    PHP_ME(blist, get_type,             NULL, ZEND_ACC_PUBLIC)
-    PHP_ME(blist, get,                  NULL, ZEND_ACC_PUBLIC)
-    PHP_ME(blist, get_path,             NULL, ZEND_ACC_PUBLIC)
-    PHP_ME(blist, get_copy,             NULL, ZEND_ACC_PUBLIC)
-    PHP_ME(blist, get_path_copy,        NULL, ZEND_ACC_PUBLIC)
-    PHP_ME(blist, add,                  NULL, ZEND_ACC_PUBLIC)
-    PHP_ME(blist, set,                  NULL, ZEND_ACC_PUBLIC)
-    PHP_ME(blist, set_path,             NULL, ZEND_ACC_PUBLIC)
-    PHP_ME(blist, has,                  NULL, ZEND_ACC_PUBLIC)
-    PHP_ME(blist, del,                  NULL, ZEND_ACC_PUBLIC)
-    PHP_ME(blist, del_path,             NULL, ZEND_ACC_PUBLIC)
-    PHP_ME(blist, length,               NULL, ZEND_ACC_PUBLIC)
-    PHP_ME(blist, count,                NULL, ZEND_ACC_PUBLIC)
-    PHP_ME(blist, parse,                NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC)
-    PHP_ME(blist, encode,               NULL, ZEND_ACC_PUBLIC)
-    PHP_ME(bitem, save,                 NULL, ZEND_ACC_PUBLIC)
-    PHP_ME(blist, search,               NULL, ZEND_ACC_PUBLIC)
-    PHP_ME(blist, to_array,             NULL, ZEND_ACC_PUBLIC)
-    PHP_ME(blist, to_meta_array,        NULL, ZEND_ACC_PUBLIC)
-    PHP_ME(blist, __toString,           NULL, ZEND_ACC_PUBLIC)
+    PHP_ME(blist, __construct,          arginfo_void, ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
+    PHP_ME(blist, get_type,             arginfo_void, ZEND_ACC_PUBLIC)
+    PHP_ME(blist, get,                  arginfo_key, ZEND_ACC_PUBLIC)
+    PHP_ME(blist, get_path,             arginfo_key, ZEND_ACC_PUBLIC)
+    PHP_ME(blist, get_copy,             arginfo_key, ZEND_ACC_PUBLIC)
+    PHP_ME(blist, get_path_copy,        arginfo_key, ZEND_ACC_PUBLIC)
+    PHP_ME(blist, add,                  arginfo_key, ZEND_ACC_PUBLIC)
+    PHP_ME(blist, set,                  arginfo_key_value, ZEND_ACC_PUBLIC)
+    PHP_ME(blist, set_path,             arginfo_key_value, ZEND_ACC_PUBLIC)
+    PHP_ME(blist, has,                  arginfo_key, ZEND_ACC_PUBLIC)
+    PHP_ME(blist, del,                  arginfo_key, ZEND_ACC_PUBLIC)
+    PHP_ME(blist, del_path,             arginfo_key, ZEND_ACC_PUBLIC)
+    PHP_ME(blist, length,               arginfo_void, ZEND_ACC_PUBLIC)
+    PHP_ME(blist, count,                arginfo_void, ZEND_ACC_PUBLIC)
+    PHP_ME(blist, parse,                arginfo_key, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC)
+    PHP_ME(blist, encode,               arginfo_void, ZEND_ACC_PUBLIC)
+    PHP_ME(bitem, save,                 arginfo_file, ZEND_ACC_PUBLIC)
+    PHP_ME(blist, search,               arginfo_search, ZEND_ACC_PUBLIC)
+    PHP_ME(blist, to_array,             arginfo_void, ZEND_ACC_PUBLIC)
+    PHP_ME(blist, to_meta_array,        arginfo_void, ZEND_ACC_PUBLIC)
+    PHP_ME(blist, __toString,           arginfo_void, ZEND_ACC_PUBLIC)
     {NULL, NULL, NULL}
     /* clang-format on */
 };
@@ -542,18 +613,21 @@ PHP_METHOD(bstr, __construct)
     bstr_object *intern = Z_BSTR_OBJ_P(getThis());
     intern->bnode_data = bnode;
 }
+
 PHP_METHOD(bstr, get_type)
 {
     bstr_object *intern = Z_BSTR_OBJ_P(getThis());
     std::string result = intern->bnode_data->get_type();
     RETURN_STRINGL(result.c_str(), result.length());
 }
+
 PHP_METHOD(bstr, get)
 {
     bstr_object *intern = Z_BSTR_OBJ_P(getThis());
     std::string result = intern->bnode_data->get();
     RETURN_STRINGL(result.c_str(), result.length());
 }
+
 PHP_METHOD(bstr, set)
 {
     char *value;
@@ -566,12 +640,14 @@ PHP_METHOD(bstr, set)
     intern->bnode_data->set(_value);
     RETURN_TRUE;
 }
+
 PHP_METHOD(bstr, length)
 {
     bstr_object *intern = Z_BSTR_OBJ_P(getThis());
     size_t result = intern->bnode_data->length();
     RETURN_LONG(result);
 }
+
 PHP_METHOD(bstr, parse)
 {
     char *ben;
@@ -585,47 +661,53 @@ PHP_METHOD(bstr, parse)
     size_t pt = 0;
     CALL_AND_HANDLE(bstr::parse(tmp, pt));
 }
+
 PHP_METHOD(bstr, encode)
 {
     bstr_object *intern = Z_BSTR_OBJ_P(getThis());
     std::string result = intern->bnode_data->encode();
     RETURN_STRINGL(result.c_str(), result.length());
 }
+
 PHP_METHOD(bstr, search)
 {
     RETURN_NULL();
 }
+
 PHP_METHOD(bstr, to_array)
 {
     bstr_object *intern = Z_BSTR_OBJ_P(getThis());
     zval zv = intern->bnode_data->to_array(false);
     RETURN_ZVAL(&zv, 1, 1);
 }
+
 PHP_METHOD(bstr, to_meta_array)
 {
     bstr_object *intern = Z_BSTR_OBJ_P(getThis());
     zval zv = intern->bnode_data->to_array(true);
     RETURN_ZVAL(&zv, 1, 1);
 }
+
 PHP_METHOD(bstr, __toString)
 {
     bstr_object *intern = Z_BSTR_OBJ_P(getThis());
     std::string result = intern->bnode_data->encode();
     RETURN_STRINGL(result.c_str(), result.length());
 }
+
 static zend_function_entry bstr_methods[] = {
     /* clang-format off */
-    PHP_ME(bstr, __construct,           NULL, ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
-    PHP_ME(bstr, get_type,              NULL, ZEND_ACC_PUBLIC)
-    PHP_ME(bstr, get,                   NULL, ZEND_ACC_PUBLIC)
-    PHP_ME(bstr, set,                   NULL, ZEND_ACC_PUBLIC)
-    PHP_ME(bstr, length,                NULL, ZEND_ACC_PUBLIC)
-    PHP_ME(bstr, parse,                 NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC)
-    PHP_ME(bstr, encode,                NULL, ZEND_ACC_PUBLIC)
-    PHP_ME(bitem, save,                 NULL, ZEND_ACC_PUBLIC)
-    PHP_ME(bstr, to_array,              NULL, ZEND_ACC_PUBLIC)
-    PHP_ME(bstr, to_meta_array,         NULL, ZEND_ACC_PUBLIC)
-    PHP_ME(bstr, __toString,            NULL, ZEND_ACC_PUBLIC)
+    PHP_ME(bstr, __construct,           arginfo_key, ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
+    PHP_ME(bstr, get_type,              arginfo_void, ZEND_ACC_PUBLIC)
+    PHP_ME(bstr, get,                   arginfo_void, ZEND_ACC_PUBLIC)
+    PHP_ME(bstr, set,                   arginfo_key, ZEND_ACC_PUBLIC)
+    PHP_ME(bstr, length,                arginfo_void, ZEND_ACC_PUBLIC)
+    PHP_ME(bstr, parse,                 arginfo_key, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC)
+    PHP_ME(bstr, encode,                arginfo_void, ZEND_ACC_PUBLIC)
+    PHP_ME(bitem, save,                 arginfo_file, ZEND_ACC_PUBLIC)
+    PHP_ME(bstr, to_array,              arginfo_void, ZEND_ACC_PUBLIC)
+    PHP_ME(bstr, to_meta_array,         arginfo_void, ZEND_ACC_PUBLIC)
+    PHP_ME(bstr, __toString,            arginfo_void, ZEND_ACC_PUBLIC)
     {NULL, NULL, NULL}
     /* clang-format on */
 };
@@ -646,18 +728,21 @@ PHP_METHOD(bint, __construct)
     bint_object *intern = Z_BINT_OBJ_P(getThis());
     intern->bnode_data = bnode;
 }
+
 PHP_METHOD(bint, get_type)
 {
     bint_object *intern = Z_BINT_OBJ_P(getThis());
     std::string result = intern->bnode_data->get_type();
     RETURN_STRINGL(result.c_str(), result.length());
 }
+
 PHP_METHOD(bint, get)
 {
     bint_object *intern = Z_BINT_OBJ_P(getThis());
     long result = intern->bnode_data->get();
     RETURN_LONG(result);
 }
+
 PHP_METHOD(bint, set)
 {
     long value;
@@ -668,12 +753,14 @@ PHP_METHOD(bint, set)
     intern->bnode_data->set(value);
     RETURN_TRUE;
 }
+
 PHP_METHOD(bint, length)
 {
     bint_object *intern = Z_BINT_OBJ_P(getThis());
     size_t result = intern->bnode_data->length();
     RETURN_LONG(result);
 }
+
 PHP_METHOD(bint, parse)
 {
     char *ben;
@@ -687,47 +774,53 @@ PHP_METHOD(bint, parse)
     size_t pt = 0;
     CALL_AND_HANDLE(bint::parse(tmp, pt));
 }
+
 PHP_METHOD(bint, encode)
 {
     bint_object *intern = Z_BINT_OBJ_P(getThis());
     std::string result = intern->bnode_data->encode();
     RETURN_STRINGL(result.c_str(), result.length());
 }
+
 PHP_METHOD(bint, search)
 {
     RETURN_NULL();
 }
+
 PHP_METHOD(bint, to_array)
 {
     bint_object *intern = Z_BINT_OBJ_P(getThis());
     zval zv = intern->bnode_data->to_array(false);
     RETURN_ZVAL(&zv, 1, 1);
 }
+
 PHP_METHOD(bint, to_meta_array)
 {
     bint_object *intern = Z_BINT_OBJ_P(getThis());
     zval zv = intern->bnode_data->to_array(true);
     RETURN_ZVAL(&zv, 1, 1);
 }
+
 PHP_METHOD(bint, __toString)
 {
     bint_object *intern = Z_BINT_OBJ_P(getThis());
     std::string result = intern->bnode_data->encode();
     RETURN_STRINGL(result.c_str(), result.length());
 }
+
 static zend_function_entry bint_methods[] = {
     /* clang-format off */
-    PHP_ME(bint, __construct,           NULL, ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
-    PHP_ME(bint, get_type,              NULL, ZEND_ACC_PUBLIC)
-    PHP_ME(bint, get,                   NULL, ZEND_ACC_PUBLIC)
-    PHP_ME(bint, set,                   NULL, ZEND_ACC_PUBLIC)
-    PHP_ME(bint, length,                NULL, ZEND_ACC_PUBLIC)
-    PHP_ME(bint, parse,                 NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC)
-    PHP_ME(bint, encode,                NULL, ZEND_ACC_PUBLIC)
-    PHP_ME(bitem, save,                 NULL, ZEND_ACC_PUBLIC)
-    PHP_ME(bint, to_array,              NULL, ZEND_ACC_PUBLIC)
-    PHP_ME(bint, to_meta_array,         NULL, ZEND_ACC_PUBLIC)
-    PHP_ME(bint, __toString,            NULL, ZEND_ACC_PUBLIC)
+    PHP_ME(bint, __construct,           arginfo_key, ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
+    PHP_ME(bint, get_type,              arginfo_void, ZEND_ACC_PUBLIC)
+    PHP_ME(bint, get,                   arginfo_void, ZEND_ACC_PUBLIC)
+    PHP_ME(bint, set,                   arginfo_key, ZEND_ACC_PUBLIC)
+    PHP_ME(bint, length,                arginfo_void, ZEND_ACC_PUBLIC)
+    PHP_ME(bint, parse,                 arginfo_key, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC)
+    PHP_ME(bint, encode,                arginfo_void, ZEND_ACC_PUBLIC)
+    PHP_ME(bitem, save,                 arginfo_file, ZEND_ACC_PUBLIC)
+    PHP_ME(bint, to_array,              arginfo_void, ZEND_ACC_PUBLIC)
+    PHP_ME(bint, to_meta_array,         arginfo_void, ZEND_ACC_PUBLIC)
+    PHP_ME(bint, __toString,            arginfo_void, ZEND_ACC_PUBLIC)
     {NULL, NULL, NULL}
     /* clang-format on */
 };
@@ -770,6 +863,20 @@ PHP_MSHUTDOWN_FUNCTION(bencode)
     return SUCCESS;
 }
 
+//PHP_MINFO_FUNCTION(bencode)
+//{
+//    time_t t;
+//    char cur_time[32];
+//
+//    time(&t);
+//    php_asctime_r(localtime(&t), cur_time);
+//
+//    php_info_print_table_start();
+//    php_info_print_table_colspan_header(2, "ttys3.net");
+//    php_info_print_table_row(2, "Current time", cur_time);
+//    php_info_print_table_end();
+//}
+
 zend_module_entry bencode_module_entry = {
 #if ZEND_MODULE_API_NO >= 20010901
     STANDARD_MODULE_HEADER,
@@ -780,7 +887,7 @@ zend_module_entry bencode_module_entry = {
     PHP_MSHUTDOWN(bencode), //PHP_MSHUTDOWN(bencode),
     NULL,                   //PHP_RINIT(bencode),
     NULL,                   //PHP_RSHUTDOWN
-    NULL,                   //PHP_MINFO
+    NULL,     //PHP_MINFO  PHP_MINFO(bencode),
 #if ZEND_MODULE_API_NO >= 20010901
     PHP_BENCODE_EXTVER,
 #endif
