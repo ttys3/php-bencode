@@ -5,7 +5,7 @@ PHP_ARG_ENABLE(bencode,
 if test "$PHP_BENCODE" != "no"; then
     AC_DEFINE(HAVE_BENCODE, 1, [Whether you have Bencode extension])
     CFLAGS="-g -O3"
-    CXXFLAGS="-std=c++11 -g -O3"
+    CXXFLAGS="-std=c++14 -g -O3"
     PHP_REQUIRE_CXX()
     PHP_SUBST(BENCODE_SHARED_LIBADD)
     PHP_ADD_LIBRARY(stdc++, 1, BENCODE_SHARED_LIBADD)
