@@ -27,7 +27,7 @@ rm -rf /tmp/*; \
 rm -rf /var/cache/apk/*; \
 rm -rf /usr/share/gtk-doc; \
 ls -lhpR /usr/local/lib/php/extensions/; \
-mkdir -p /build/local/lib/php/extensions/no-debug-non-zts-20200930/; \
+mkdir -p /build/usr/local/lib/php/extensions/no-debug-non-zts-20200930/; \
 mkdir -p /build/usr/local/etc/php/conf.d/; \
 echo "bencode.namespace=1" >> /usr/local/etc/php/conf.d/docker-php-ext-bencode.ini; \
 cp -v /usr/local/lib/php/extensions/no-debug-non-zts-20200930/bencode.so /build/usr/local/lib/php/extensions/no-debug-non-zts-20200930/bencode.so; \
