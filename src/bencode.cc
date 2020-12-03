@@ -22,7 +22,6 @@
         RETURN_NULL();                                                                                                       \
     }
 
-
 /**** BITEM *****/
 PHP_METHOD(bitem, __construct)
 {
@@ -86,25 +85,25 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_void, 0, 0, 0)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_parse, 0, 0, 1)
-        ZEND_ARG_INFO(0, bencoded_string_to_parse)
+ZEND_ARG_INFO(0, bencoded_string_to_parse)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_file, 0, 0, 1)
-        ZEND_ARG_INFO(0, file)
+ZEND_ARG_INFO(0, file)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_key, 0, 0, 1)
-        ZEND_ARG_INFO(0, key)
+ZEND_ARG_INFO(0, key)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_key_value, 0, 0, 2)
-        ZEND_ARG_INFO(0, key)
-        ZEND_ARG_INFO(0, value)
+ZEND_ARG_INFO(0, key)
+ZEND_ARG_INFO(0, value)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_search, 0, 0, 2)
-        ZEND_ARG_INFO(0, needle)
-        ZEND_ARG_INFO(0, mode)
+ZEND_ARG_INFO(0, needle)
+ZEND_ARG_INFO(0, mode)
 ZEND_END_ARG_INFO()
 
 static zend_function_entry bitem_methods[] = {
@@ -322,7 +321,6 @@ PHP_METHOD(bdict, __toString)
     std::string result = intern->bnode_data->encode();
     RETURN_STRINGL(result.c_str(), result.length());
 }
-
 
 static zend_function_entry bdict_methods[] = {
     /* clang-format off */
@@ -887,7 +885,7 @@ zend_module_entry bencode_module_entry = {
     PHP_MSHUTDOWN(bencode), //PHP_MSHUTDOWN(bencode),
     NULL,                   //PHP_RINIT(bencode),
     NULL,                   //PHP_RSHUTDOWN
-    NULL,     //PHP_MINFO  PHP_MINFO(bencode),
+    NULL,                   //PHP_MINFO  PHP_MINFO(bencode),
 #if ZEND_MODULE_API_NO >= 20010901
     PHP_BENCODE_EXTVER,
 #endif
