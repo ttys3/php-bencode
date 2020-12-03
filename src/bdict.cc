@@ -245,7 +245,7 @@ std::string bdict::encode() const
 
     // according to BEP http://bittorrent.org/beps/bep_0003.html
     // keys must be strings and appear in sorted order (sorted as raw strings, not alphanumerics).
-    zend_hash_sort_ex(_data, zend_sort, reinterpret_cast<bucket_compare_func_t>(php_array_key_compare_string), 0);
+    zend_hash_sort_ex(_data, zend_sort, php_array_key_compare_string, 0);
 
     for (zend_hash_internal_pointer_reset(_data);
          zend_hash_has_more_elements(_data) == SUCCESS;

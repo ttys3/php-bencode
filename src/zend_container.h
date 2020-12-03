@@ -17,7 +17,22 @@ extern "C" {
 #endif /* PHP_VERSION_ID >= 80000 */
 
 // c func borrowed from https://github.com/php/php-src/blob/e08ce4c13db6e9aecd3497cd270b72d06c649bc7/ext/standard/array.c#L245
+/*
+ * https://github.com/php/php-src/blob/898bb97706326311a367aaef35b3f95510100f3c/UPGRADING.INTERNALS#L113
+ * The zend_hash_sort and zend_hash_minmax APIs now accept a comparison
+     function with the following signature:
+
+         typedef int (*bucket_compare_func_t)(Bucket *a, Bucket *b);
+
+     Previously compare_func_t was used, which accepted void pointers.
+     Furthermore, the return type of zend_hash_sort and zend_ts_hash_sort has
+     been changed from int to void; these functions always succeed.
+ */
+#if PHP_VERSION_ID >= 80000
 static int php_array_key_compare_string(Bucket *a, Bucket *b)
+#else /* PHP_VERSION_ID < 80000 */
+static int php_array_key_compare_string(const void *a, const void *b)
+#endif /* PHP_VERSION_ID >= 80000 */
 {
     Bucket *f = (Bucket *)a;
     Bucket *s = (Bucket *)b;
