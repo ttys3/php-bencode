@@ -25,7 +25,7 @@
         intern->std.handlers = &zend_container::bclass##_object_handlers;                                \
         return &intern->std;                                                                             \
     }                                                                                                    \
-    zend_object *zend_container::bclass##_object_clone(bencode_compat_object_type *object)                           \
+    zend_object *zend_container::bclass##_object_clone(BENCODE_VAL *object)                           \
     {                                                                                                    \
         bclass##_object *old_object = zend_container::bclass##_fetch_object(BENCODE_COMPAT_GET_OBJ(object));            \
         zend_object *new_zend_object = zend_container::bclass##_object_new(zend_container::bclass##_ce); \

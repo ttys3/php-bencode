@@ -8,11 +8,11 @@ extern "C" {
 
 #if PHP_VERSION_ID >= 80000
 #define BENCODE_COMPAT_OBJ_P(val) Z_OBJ_P(val)
-#define bencode_compat_object_type zend_object
+#define BENCODE_VAL zend_object
 #define BENCODE_COMPAT_GET_OBJ(val) val
 #else /* PHP_VERSION_ID < 80000 */
 #define BENCODE_COMPAT_OBJ_P(val) val
-#define bencode_compat_object_type zval
+#define BENCODE_VAL zval
 #define BENCODE_COMPAT_GET_OBJ(val) Z_OBJ_P(val)
 #endif /* PHP_VERSION_ID >= 80000 */
 
@@ -75,7 +75,7 @@ ZEND_CONTAINER_PRE(bint)
     static zend_class_entry *bclass##_ce;                              \
     static bclass##_object *bclass##_fetch_object(zend_object *obj);   \
     static void bclass##_free_storage(zend_object *object);  \
-    static zend_object *bclass##_object_clone(bencode_compat_object_type *object); \
+    static zend_object *bclass##_object_clone(BENCODE_VAL *object); \
     static zend_object *bclass##_object_new(zend_class_entry *ce);
 
 class zend_container
