@@ -21,7 +21,8 @@ include_directories(src)
 set(CMAKE_SHARED_LIBRARY_PREFIX "")
 #set_target_properties(bencode PROPERTIES PREFIX "")
 
-set(PHP_SRC_PATH /opt/remi/php80/root/usr/include/php)
+#set(PHP_SRC_PATH /opt/remi/php80/root/usr/include/php)
+set(PHP_SRC_PATH /usr/include/php)
 include_directories(
         "${PHP_SRC_PATH}"
         "${PHP_SRC_PATH}/main"
