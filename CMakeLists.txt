@@ -4,6 +4,8 @@ cmake_minimum_required(VERSION 3.15)
 set(PHP_EXT_NAME bencode)
 project(${PHP_EXT_NAME})
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 message(STATUS "Begin cmaking of PHP extension ...")
 
 set(CMAKE_CXX_STANDARD 14)
